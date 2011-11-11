@@ -10,12 +10,16 @@ www index:
 		RewriteCond %{REQUEST_FILENAME} !-d
 		RewriteRule ^(.*)$ /WEB_PATH_TO_INDEX_PHP/index.php?q=$1 [L,NS]
 
-	and then ln -s /path/to/bdhcpd/decision-maker/mysql-static/www/index /path/to/your/www/vhost
+	and then ln -s /path/to/dhcpd/decision-maker/mysql-static/www/index /path/to/your/www/vhost
 	example:
-	ln -s /home/jack/bdhcpd/decision-maker/mysql-static/www/index /var/www/bdhcpd
+	ln -s /home/jack/dhcpd/decision-maker/mysql-static/www/index /var/www/dhcpd
 	dont forget to modify index.php for the correct URL
 
-
+SQL:
+	edit obj/db.php and change the new PDO() according to your needs
+		see: http://www.php.net/manual/en/book.pdo.php
+		its basicly new PDO(dsn,user,pass)
+		dsn: 
 
 Smarty:
 	Download Smarty template engine, and extract it into directory lib/smarty/,
@@ -31,5 +35,5 @@ Smarty:
 		dont forget to create smarty's template_c directory with httpd's user writable permitions,
 		inside www/index/ directory
 		example:
-		mkdir  /home/jack/bdhcpd/decision-maker/mysql-static/www/index/templates_c
-		chown www:www  /home/jack/bdhcpd/decision-maker/mysql-static/www/index/templates_c
+		mkdir  /home/jack/dhcpd/decision-maker/mysql-static/www/index/templates_c
+		chown www:www  /home/jack/dhcpd/decision-maker/mysql-static/www/index/templates_c

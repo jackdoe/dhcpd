@@ -1,4 +1,4 @@
-	bdhcpd
+	dhcpd
 -1)
 	WARNING: the entire project is still pre alpha, work in progress
 0) install:

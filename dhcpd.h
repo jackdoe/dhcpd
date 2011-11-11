@@ -48,7 +48,7 @@ typedef uint64_t u64;
 #define V_CRY		0
 #define SYSLOG_LEVEL	LOG_INFO
 #define MAX_PIDFILE_LEN 256
-#define PID_FILE	"/var/run/bdhcpd.pid"
+#define PID_FILE	"/var/run/dhcpd.pid"
 
 #ifdef DEBUG
 #define _FORMAT(fmt,arg...) fmt " [%s():%s:%d]\n", ##arg,__func__,__FILE__,__LINE__
