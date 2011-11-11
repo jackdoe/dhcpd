@@ -1,6 +1,14 @@
 	bdhcpd
-
+-1)
+	WARNING: the entire project is still pre alpha, work in progress
 0) install:
+	download: 
+	$ wget -O dhcpd.tar.gz https://github.com/jackdoe/dhcpd/tarball/master
+	# or fetch -o dhcpd.tar.gz ...
+	
+	$ tar -zvxf dhcpd.tar.gz 
+	$ cd jackdoe-dhcpd-*
+	
 	edit Makefile and choose your decision maker 
 			(dont forget to edit its config in decision-maker/$decision-maker/)
 		change also the c compiler if you dont have llvm for example:

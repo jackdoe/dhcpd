@@ -36,17 +36,17 @@ void p_log(struct dhcp_packet *request_packet, int message);
 void p_signal(u8 sig);
 void p_init(int *init_status);
 void p_cleanup(void);
-/*
 
+/*
 example of p_reply function:
- struct options *o = &reply_packet->o;
- o_add_u8(o,O_MSGTYPE,reply_msg_type);
- o_add_u32(o,O_SRV_ID,global.siaddr.s_addr);
- o_add_u32(o,O_LEASE_TIME,htonl(l->lease_time));
- o_add_u32(o,O_SUBNET,l->subnet.s_addr);
- o_add_u32(o,O_BROADCAST,l->broadcast.s_addr);
- o_add_u32(o,O_ROUTER,l->gw.s_addr);
- o_add(o,O_DNS,4*(sizeof(l->dns)/sizeof(l->dns[0])),&l->dns[0]);
- o_end(o);
- fill_eth_ip_udp_dh_hdr(request_packet,reply_packet,l->ip);	
+	struct options *o = &reply_packet->o;
+	o_add_u8(o,O_MSGTYPE,reply_msg_type);
+	o_add_u32(o,O_SRV_ID,global.siaddr.s_addr);
+	o_add_u32(o,O_LEASE_TIME,htonl(l->lease_time));
+	o_add_u32(o,O_SUBNET,l->subnet.s_addr);
+	o_add_u32(o,O_BROADCAST,l->broadcast.s_addr);
+	o_add_u32(o,O_ROUTER,l->gw.s_addr);
+	o_add(o,O_DNS,4*(sizeof(l->dns)/sizeof(l->dns[0])),&l->dns[0]);
+	o_end(o);
+	fill_eth_ip_udp_dh_hdr(request_packet,reply_packet,l->ip);
 */
