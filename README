@@ -1,0 +1,95 @@
+	bdhcpd
+
+0) install:
+	edit Makefile and choose your decision maker 
+			(dont forget to edit its config in decision-maker/$decision-maker/)
+		change also the c compiler if you dont have llvm for example:
+		CC= gcc
+		$ make
+	and then:
+		$ cp dhcpd wherever-you-want
+	
+1) abstract
+	the idea is very simple:
+	client -+
+		|
+		| DHCPDISCOVER/DHCPREQUEST
+		|
+		server - pcap_loop()
+			|
+			packet_validate()
+			|(inval)	| packet is valid
+			|		|
+			|		p_reply(&reply_packet) - external
+			|		| (nop)	| (we have lease and filled reply_pkt)
+			|		|	cksum && pcap_inject(reply_packet)
+			+	____	+
+				drop
+
+	so, all the decisions can be based on whatever you want
+	CHADDR, eh->ether_shost, GIADDR, or 60-80 byte of the packet
+
+2) decision maker:
+you need to have 6 functions
+p_reply() 	called on each dhcp packet of type BOOTPREQUEST
+p_release() called on DHCPRELEASE
+p_log()		called on each packet input of any type
+p_signal()	called every XX seconds, so you can do some lease related stuff
+p_init()	called when the server starts
+p_clean()	called when the server is about to exit
+
+export.h:
+/*
+ * p_reply()
+ * arguments:
+ *	reply_packet - 
+ *		poiter to a dhcp_reply structure, the decision maker must fill
+ *		the whole structure, including ether_header, ip header,udp header
+ *		dhcp fixed header, and dhcp options
+ *	request_packet - is just a pointer to the DHCPDISCOVER/OFFER packet
+ *
+ * returns:
+ *	SUCCESS	- if there is a lease available (server will reply)
+ *	FAIL	- no free leases (server will do nothing)
+ * 
+ */
+int p_reply(struct dhcp_reply *reply_packet,
+		struct dhcp_packet *request_packet, 
+		u8 reply_msg_type, u8 request_msg_type);
+
+/*
+ * p_release()
+ * arguments:
+ *	mac,ip,dhcp_packet - plugin has to make a decision if there IS a lease
+ *				with the followinig parameters set in its database
+ * returns:
+ *	SUCCESS	- if there was a lease (the server will execute expiry() event)
+ *	FAIL	- if there was no such lease (server will do nothing)
+ */
+int p_release(u8 *mac,struct in_addr ip,struct dhcp_packet *request_packet);
+
+
+3) example decision-makers:
+	3.1) dummy
+		just an empty skeleton
+	3.2) static
+		this is an example to demonstrate framed/fixed ip address
+		assignment, based on CHADDR in the BOOTPREQUEST packet.
+		it uses db(3) hash(3) for backend, key is chaddr value is 
+		this structure:
+		struct lease {
+			struct in_addr ip;
+			struct in_addr subnet;
+			struct in_addr dns[DNS_COUNT];
+			struct in_addr gw;
+			struct in_addr broadcast;
+			u32 lease_time;
+		};
+		so the decision maker must fill the whole dhcp_reply structure
+		including ether_header, ip header, udp header, dhcp header, dhcp options
+		with the information it has from the BOOTPREQUEST packet plus this 
+		simple lease structure.
+	3.3) static-mysql
+		same as static, but instead db(3) it uses mysql
+		you can see the example tables in decision-maker/mysql-static/mysql-config.h.
+

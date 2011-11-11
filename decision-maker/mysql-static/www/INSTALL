@@ -1,0 +1,35 @@
+requirements:
+	apache with mod_rewrite
+	php5 with PDO mysql
+
+www index:
+	create .htaccess inside index/ directory
+	htaccess:
+		RewriteEngine On
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule ^(.*)$ /WEB_PATH_TO_INDEX_PHP/index.php?q=$1 [L,NS]
+
+	and then ln -s /path/to/bdhcpd/decision-maker/mysql-static/www/index /path/to/your/www/vhost
+	example:
+	ln -s /home/jack/bdhcpd/decision-maker/mysql-static/www/index /var/www/bdhcpd
+	dont forget to modify index.php for the correct URL
+
+
+
+Smarty:
+	Download Smarty template engine, and extract it into directory lib/smarty/,
+	so that we have lib/smarty/Smarty.class.php (included from index.php)
+	$ cd lib
+	$ wget http://www.smarty.net/files/Smarty-3.1.4.tar.gz # try to download the latest version
+	$ tar zxf Smarty* && mv Smarty-* smarty
+	Of corse if you have smarty somewhere else on your server, just modify the line in index.php
+	to reflect the actual place of Smarty.class.php. (currently everything is tested with 3.1.4, but it might
+	work on earlyer versions)
+
+	Templates:
+		dont forget to create smarty's template_c directory with httpd's user writable permitions,
+		inside www/index/ directory
+		example:
+		mkdir  /home/jack/bdhcpd/decision-maker/mysql-static/www/index/templates_c
+		chown www:www  /home/jack/bdhcpd/decision-maker/mysql-static/www/index/templates_c
