@@ -55,11 +55,9 @@ class group extends PRIMITIVE {
 				$c++;
 			}
 			if ($g->delete()) {
-				if ($c > 0)
-					$this->say("$c member".(($c > 1) ? "s" : "" )." moved from gid $id to " . ANONYMOUS_GROUP);
-				$this->success("delete: success");
+				$this->success("deleted group $id with " . (($c > 0) ? (($c > 1) ? "$c members" : "1 member") . "(moved to ".ANONYMOUS_GROUP.")" : "zero members"));
 			} else {
-				$this->fail("delete");
+				$this->fail("delete failed");
 			}
 			break;
 		}
@@ -89,7 +87,7 @@ class group extends PRIMITIVE {
 		break;
 		case 'remove':
 			if ($id == $anon->_id) {
-				$this->fail("$action: cant remove members from ". ANONYMOUS_GROUP);
+				$this->fail("$action: cant remove objects from ". ANONYMOUS_GROUP);
 				break;
 			}
 			switch($subaction) {
@@ -111,9 +109,9 @@ class group extends PRIMITIVE {
 		case 'add':
 			$ip = new OBJ_IP($subid);
 			if ($ip->move_to_gid($id))
-				$this->success($action);
-			else
-				$this->fail($action);
+				$this->success("inserted object {$ip->_id} to group $id");
+			else 
+				$this->fail("insert failed");
 		break;
 		}
 	}
