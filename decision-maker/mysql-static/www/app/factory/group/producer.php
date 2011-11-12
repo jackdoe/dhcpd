@@ -10,6 +10,13 @@ class group extends PRIMITIVE {
 	function edit($id = 0 ,$action = 'unknown', $subid = 0, $subaction = 'unknown') {
 		$this->template = 'edit.tpl';
 		$g = new OBJ_GROUP($id);
+		$anon = new OBJ_GROUP();
+		$anon->get_anon();
+		if ($g->valid_id($g->_id) && $g->_id == $anon->_id) {
+			$this->fail("cant edit " . ANONYMOUS_GROUP);
+			return;
+		}
+
 		$out = array();
 		$out = $g->assoc();
 		if ($id == 0) {

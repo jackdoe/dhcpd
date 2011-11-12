@@ -66,7 +66,7 @@ class ERR {
 	}
 	function valid_id($id) {
 		if (!is_int($id) || $id < 1) {
-			$this->warn("invalid nonint id: $id");
+			$this->warn("invalid id: $id");
 			return false;
 		}
 		switch(get_class($this)) {

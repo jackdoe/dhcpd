@@ -6,6 +6,7 @@ class FACTORY {
 	public $factory_name;
 	public $method;
 	public $params;
+	public $orig_params;
 	public $factory_producer;
 	public $factory_root;
 	function __construct($g = array()) {
@@ -52,6 +53,7 @@ class FACTORY {
 		} else {
 			home(); /* xxx: fall back to 'unknown' */
 		}
+		$this->orig_params = $this->params;
 		$this->factory_name = $factory_name;
 		$this->smarty = new Smarty();
 		$this->factory = new $factory_name($this);
@@ -65,8 +67,9 @@ class FACTORY {
 	}
 	function start() {
 		$c = count($this->params);
-		switch($c) {
-		case ($c >= 4): /* factory/method/action/id/subaction/id */
+						//			  cut here
+		switch($c) {	//				 v
+		case ($c >= 4): // factory/method/id/action/subid/subaction/... 
 			$id = intval(array_shift($this->params));
 			$action = array_shift($this->params);
 			$subid = intval(array_shift($this->params));
@@ -106,6 +109,7 @@ class FACTORY {
 		case SUCCESS: 
 			$template = SHARED . "/success.tpl"; 
 		break;
+		case UNDEFINED:
 		default:
 			$template = "{$this->factory_root}/output/{$this->factory->template}";
 		}
