@@ -65,19 +65,22 @@ class ERR {
 		return false;
 	}
 	function valid_id($id) {
-		if (!is_int($id) || $id < 1) 
+		if (!is_int($id) || $id < 1) {
+			$this->warn("invalid nonint id: $id");
 			return false;
-		
+		}
 		switch(get_class($this)) {
 		case "OBJ_GROUP":	   
-			if ($id < MIN_GROUP_ID) 
+			if ($id < MIN_GROUP_ID) {
+				$this->warn("invalid objgroup id: $id must be > " . MIN_GROUP_ID);
 				return false;
-			
+			}
 			break;
 		case "OBJ_IP":
-			if ($id >= MIN_GROUP_ID) 
+			if ($id >= MIN_GROUP_ID) {
+				$this->warn("invalid obj_ip id: $id must be <= " . MIN_GROUP_ID);
 				return false;
-			
+			}
 			break;
 		}
 		return true;

@@ -25,20 +25,23 @@ class OBJ_IP extends DB {
 	}
 	function move_to_gid($gid) {
 		if (!$this->valid_self()) {
-			return;
+			return false;
 		}
 		$gid = intval($gid);
 		$g = new OBJ_GROUP($gid);
 		if ($g->valid_self()) {
-			$query = "UPDATE `{$this->table}` SET group = $gid WHERE id= {$this->_id}";
+			$query = "UPDATE `{$this->table}` SET group_id = $gid WHERE id= {$this->_id}";
 			if (!$this->query($query)) {
 				$this->warn('update failed');
+				return false;
+			} else {
+				return true;
 			}
 		}
 	}
 	function valid_group($id) {
-		$g = new OBJ_GROUP($id);
-		if (!$g->valid_self()) {
+		$g = new OBJ_GROUP();
+		if (!$g->valid_id($id)) {
 			$this->warn("invalid group $id");
 			return false;
 		}

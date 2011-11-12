@@ -75,7 +75,7 @@
 </head>
 <body>
 <center>
-	<font color=red>WARNING: this is still work in progress, do not use it in production</font>
+	<font color=red>WARNING: this is still work in progress, do not use it in production</font><br>
 </center>
 <div id="wrapper">
 	<div id="left">
