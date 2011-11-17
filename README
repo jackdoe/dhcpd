@@ -1,6 +1,13 @@
 	dhcpd
 -1)
 	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+	WARNING: the entire project is still pre alpha, work in progress
+
 0) install:
 	download: 
 	$ wget -O dhcpd.tar.gz https://github.com/jackdoe/dhcpd/tarball/master
